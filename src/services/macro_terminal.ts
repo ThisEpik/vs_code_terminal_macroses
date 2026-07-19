@@ -55,13 +55,27 @@ export class MacroTerminal implements vscode.Pseudoterminal {
       env: process.env,
     });
 
-    processInstance.stdout.on('data', (data) => {
-      this.writeEmitter.fire(data.toString());
-    });
+    let outputBuffer = '';
 
-    processInstance.stderr.on('data', (data) => {
-      this.writeEmitter.fire(data.toString());
-    });
+    const writeOutput = (data: Buffer) => {
+      let text = data.toString();
+
+      text = text.replace(/\r\n/g, '\n');
+
+      outputBuffer += text;
+
+      const lines = outputBuffer.split('\n');
+
+      outputBuffer = lines.pop() ?? '';
+
+      for (const line of lines) {
+        this.writeEmitter.fire(line + '\r\n');
+      }
+    };
+
+    processInstance.stdout.on('data', writeOutput);
+
+    processInstance.stderr.on('data', writeOutput);
 
     processInstance.on('close', (code) => {
       this.running = false;

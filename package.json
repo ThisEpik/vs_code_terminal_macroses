@@ -9,10 +9,7 @@
   "categories": [
     "Other"
   ],
-  "activationEvents": [
-    "onView:terminalMacros",
-    "onCommand:terminalMacros.createMacro"
-  ],
+  "activationEvents": [],
   "main": "./out/extension.js",
   "contributes": {
     "commands": [

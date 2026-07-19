@@ -27,6 +27,10 @@
       {
         "command": "terminalMacros.deleteMacro",
         "title": "Delete Macro"
+      },
+      {
+        "command": "terminalMacros.runMacro",
+        "title": "Run Macro"
       }
     ],
     "viewsContainers": {

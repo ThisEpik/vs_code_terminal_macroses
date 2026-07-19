@@ -8,5 +8,13 @@ export class MacroTreeItem extends vscode.TreeItem {
     this.description = `${macro.commands.length} commands`;
 
     this.contextValue = 'macro';
+
+    this.command = {
+      command: 'terminalMacros.runMacro',
+
+      title: 'Run Macro',
+
+      arguments: [macro],
+    };
   }
 }

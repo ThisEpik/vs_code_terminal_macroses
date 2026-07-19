@@ -5,6 +5,19 @@
   "version": "0.0.1",
   "publisher": "thisepik",
   "license": "MIT",
+  "icon": "resources/logo.png",
+  "keywords": [
+    "terminal",
+    "macro",
+    "macros",
+    "automation",
+    "command",
+    "commands",
+    "shell",
+    "powershell",
+    "bash",
+    "workflow"
+  ],
   "repository": {
     "type": "git",
     "url": "https://github.com/ThisEpik/vs_code_terminal_macroses"
@@ -17,7 +30,9 @@
     "vscode": "^1.125.0"
   },
   "categories": [
-    "Other"
+    "Other",
+    "Programming Languages",
+    "Snippets"
   ],
   "activationEvents": [],
   "main": "./out/extension.js",

@@ -1,75 +1,55 @@
-import * as vscode from "vscode";
-import { MacroStorage } from "./storage/macro_storage";
-import { Macro } from "./models/macro";
+import * as vscode from 'vscode';
+import { MacroStorage } from './storage/macro_storage';
+import { Macro } from './models/macro';
 
 export class MacroEditor {
-
-    public static create(context: vscode.ExtensionContext,
-    refresh: ()=>void
-) {
-    
-
-        const panel = vscode.window.createWebviewPanel(
-            "macroEditor",
-            "Create Macro",
-            vscode.ViewColumn.One,
-            {
-                enableScripts: true
-            }
-        );
-
-        panel.webview.html = this.getHtml();
-
-        panel.webview.onDidReceiveMessage(
-            async message => {
-
-                switch (message.command) {
-
-                    case "save":
-
-    const macro: Macro = {
-
-        id: Date.now().toString(),
-
-        name: message.name,
-
-        commands:
-            message.commands
-            .split("\n")
-            .map((x: string)=>x.trim())
-            .filter((x: string)=>x.length > 0)
-
-    };
-
-
-    await MacroStorage.add(
-        context,
-        macro
+  public static create(context: vscode.ExtensionContext, refresh: () => void) {
+    const panel = vscode.window.createWebviewPanel(
+      'macroEditor',
+      'Create Macro',
+      vscode.ViewColumn.One,
+      {
+        enableScripts: true,
+      },
     );
 
-    refresh();
+    panel.webview.html = this.getHtml();
 
+    panel.webview.onDidReceiveMessage(
+      async (message) => {
+        switch (message.command) {
+          case 'save':
+            const macro: Macro = {
+              id: Date.now().toString(),
 
-    vscode.window.showInformationMessage(
-        `Macro "${macro.name}" created`
+              name: message.name,
+
+              commands: message.commands
+                .split('\n')
+                .map((x: string) => x.trim())
+                .filter((x: string) => x.length > 0),
+            };
+
+            await MacroStorage.add(context, macro);
+
+            refresh();
+
+            vscode.window.showInformationMessage(
+              `Macro "${macro.name}" created`,
+            );
+
+            panel.dispose();
+
+            break;
+        }
+      },
+      undefined,
+      context.subscriptions,
     );
+  }
 
-
-    panel.dispose();
-
-    break;
-                }
-
-            },
-            undefined,
-            context.subscriptions
-        );
-    }
-
-
-    private static getHtml(): string {
-
-        return `
+  private static getHtml(): string {
+    return `
         <!DOCTYPE html>
         <html>
         <head>
@@ -154,5 +134,5 @@ npm test"></textarea>
         </body>
         </html>
         `;
-    }
+  }
 }

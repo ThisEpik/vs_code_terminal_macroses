@@ -1,9 +1,7 @@
 export interface Macro {
+  id: string;
 
-    id: string;
+  name: string;
 
-    name: string;
-
-    commands: string[];
-
+  commands: string[];
 }

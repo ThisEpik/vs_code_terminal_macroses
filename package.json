@@ -2,7 +2,7 @@
   "name": "terminal-macroses",
   "displayName": "Terminal Macroses",
   "description": "Create and manage your macroses for terminal",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "publisher": "thisepik",
   "license": "MIT",
   "icon": "resources/logo.png",

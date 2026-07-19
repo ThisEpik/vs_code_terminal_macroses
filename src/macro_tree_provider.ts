@@ -1,6 +1,7 @@
 import * as vscode from 'vscode';
 import { MacroStorage } from './storage/macro_storage';
 import { Macro } from './models/macro';
+import { MacroTreeItem } from './macro_tree_item';
 
 export class MacroTreeProvider implements vscode.TreeDataProvider<vscode.TreeItem> {
   private context: vscode.ExtensionContext;
@@ -37,7 +38,7 @@ export class MacroTreeProvider implements vscode.TreeDataProvider<vscode.TreeIte
     const macros = MacroStorage.getAll(this.context);
 
     for (const macro of macros) {
-      const item = new vscode.TreeItem(macro.name);
+      const item = new MacroTreeItem(macro);
 
       item.description = `${macro.commands.length} commands`;
 

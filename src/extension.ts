@@ -1,6 +1,8 @@
 import * as vscode from 'vscode';
 import { MacroTreeProvider } from './macro_tree_provider';
 import { MacroEditor } from './macro_editor';
+import { MacroStorage } from './storage/macro_storage';
+import { MacroTreeItem } from './macro_tree_item';
 
 export function activate(context: vscode.ExtensionContext) {
   const provider = new MacroTreeProvider(context);
@@ -14,7 +16,24 @@ export function activate(context: vscode.ExtensionContext) {
     },
   );
 
+  const deleteCommand = vscode.commands.registerCommand(
+    'terminalMacros.deleteMacro',
+    async (item: MacroTreeItem) => {
+      await MacroStorage.remove(context, item.macro.id);
+
+      provider.refresh();
+    },
+  );
+
+  const editCommand = vscode.commands.registerCommand(
+    'terminalMacros.editMacro',
+    async (item: MacroTreeItem) => {
+      vscode.window.showInformationMessage(`Edit ${item.macro.name}`);
+    },
+  );
+
   context.subscriptions.push(disposable);
+  context.subscriptions.push(deleteCommand, editCommand);
 }
 
 export function deactivate() {}

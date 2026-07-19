@@ -45,6 +45,18 @@
           "name": "Macros"
         }
       ]
+    },
+    "menus": {
+      "view/item/context": [
+        {
+          "command": "terminalMacros.editMacro",
+          "when": "view == terminalMacros && viewItem == macro"
+        },
+        {
+          "command": "terminalMacros.deleteMacro",
+          "when": "view == terminalMacros && viewItem == macro"
+        }
+      ]
     }
   },
   "scripts": {

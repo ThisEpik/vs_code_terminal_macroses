@@ -19,4 +19,24 @@ export class MacroStorage {
 
     await this.save(context, macros);
   }
+
+  static async update(context: vscode.ExtensionContext, updatedMacro: Macro) {
+    const macros = this.getAll(context);
+
+    const index = macros.findIndex((x) => x.id === updatedMacro.id);
+
+    if (index === -1) return;
+
+    macros[index] = updatedMacro;
+
+    await this.save(context, macros);
+  }
+
+  static async remove(context: vscode.ExtensionContext, id: string) {
+    const macros = this.getAll(context);
+
+    const filtered = macros.filter((x) => x.id !== id);
+
+    await this.save(context, filtered);
+  }
 }

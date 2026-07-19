@@ -3,7 +3,11 @@ import { MacroStorage } from './storage/macro_storage';
 import { Macro } from './models/macro';
 
 export class MacroEditor {
-  public static create(context: vscode.ExtensionContext, refresh: () => void) {
+  public static create(
+    context: vscode.ExtensionContext,
+    refresh: () => void,
+    editMacro?: Macro,
+  ) {
     const panel = vscode.window.createWebviewPanel(
       'macroEditor',
       'Create Macro',
@@ -13,14 +17,14 @@ export class MacroEditor {
       },
     );
 
-    panel.webview.html = this.getHtml();
+    panel.webview.html = this.getHtml(editMacro);
 
     panel.webview.onDidReceiveMessage(
       async (message) => {
         switch (message.command) {
           case 'save':
-            const macro: Macro = {
-              id: Date.now().toString(),
+            const updatedMacro: Macro = {
+              id: editMacro ? editMacro.id : Date.now().toString(),
 
               name: message.name,
 
@@ -30,12 +34,16 @@ export class MacroEditor {
                 .filter((x: string) => x.length > 0),
             };
 
-            await MacroStorage.add(context, macro);
+            if (editMacro) {
+              await MacroStorage.update(context, updatedMacro);
+            } else {
+              await MacroStorage.add(context, updatedMacro);
+            }
 
             refresh();
 
             vscode.window.showInformationMessage(
-              `Macro "${macro.name}" created`,
+              `Macro "${updatedMacro.name}" saved`,
             );
 
             panel.dispose();
@@ -48,7 +56,7 @@ export class MacroEditor {
     );
   }
 
-  private static getHtml(): string {
+  private static getHtml(macro?: Macro): string {
     return `
         <!DOCTYPE html>
         <html>
@@ -93,7 +101,10 @@ export class MacroEditor {
             Macro name
         </label>
 
-        <input id="name" placeholder="Build">
+        <input 
+          id="name" 
+          value="${macro?.name ?? ''}"
+          placeholder="Build">
 
 
         <label>
@@ -102,8 +113,8 @@ export class MacroEditor {
 
         <textarea id="commands"
         placeholder="npm install
-npm run build
-npm test"></textarea>
+        npm run build
+        npm test">${macro ? macro.commands.join('\n') : ''}</textarea>
 
 
         <button onclick="save()">

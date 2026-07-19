@@ -28,7 +28,7 @@ export function activate(context: vscode.ExtensionContext) {
   const editCommand = vscode.commands.registerCommand(
     'terminalMacros.editMacro',
     async (item: MacroTreeItem) => {
-      vscode.window.showInformationMessage(`Edit ${item.macro.name}`);
+      MacroEditor.create(context, () => provider.refresh(), item.macro);
     },
   );
 

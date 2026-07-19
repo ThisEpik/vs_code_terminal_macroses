@@ -9,15 +9,43 @@
   "categories": [
     "Other"
   ],
-  "activationEvents": [],
+  "activationEvents": [
+    "onView:terminalMacros",
+    "onCommand:terminalMacros.createMacro"
+  ],
   "main": "./out/extension.js",
   "contributes": {
     "commands": [
       {
-        "command": "terminal-macroses.helloWorld",
-        "title": "Hello World"
+        "command": "terminalMacros.createMacro",
+        "title": "Create New Macro"
+      },
+      {
+        "command": "terminalMacros.editMacro",
+        "title": "Edit Macro"
+      },
+      {
+        "command": "terminalMacros.deleteMacro",
+        "title": "Delete Macro"
       }
-    ]
+    ],
+    "viewsContainers": {
+      "activitybar": [
+        {
+          "id": "terminalMacros",
+          "title": "Terminal Macros",
+          "icon": "resources/icon.svg"
+        }
+      ]
+    },
+    "views": {
+      "terminalMacros": [
+        {
+          "id": "terminalMacros",
+          "name": "Macros"
+        }
+      ]
+    }
   },
   "scripts": {
     "vscode:prepublish": "npm run compile",

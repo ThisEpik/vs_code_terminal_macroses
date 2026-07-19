@@ -43,7 +43,8 @@
       "terminalMacros": [
         {
           "id": "terminalMacros",
-          "name": "Macros"
+          "name": "Macros",
+          "icon": "resources/icon.svg"
         }
       ]
     },
